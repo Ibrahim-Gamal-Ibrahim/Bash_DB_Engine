@@ -52,12 +52,21 @@ do
 					then
 						echo "please enter the metadata"
 						sleep 1
+						echo -e "info about the table first col is id and second col is name" >> $table_name 
 						read -p "please enter the table id (primary key) >>  " x
-						#read -p "please enter the table name >> " y
-						#read -p "please enter student age >> " z
-						echo "$x \n $table_name \n " >> $table_name
+						echo -e "${x}:${table_name}" >> $table_name
+						echo -e "3rd line ************************\n" >> $table_name
+
 					sleep 1
-					echo "please enter the data you want"
+					echo -e "you have created a table with name:$table_name and id:${x}"
+					
+					echo "please enter the metadata you want for every object of that table like id and full name and age"
+					read -p "enter the full name of the object: " object_name
+					read -p "enter the object id as a primary key, id: " "id_${object_name}"
+				        read -p "enter the age: " "age_${object_name}"
+					echo -e "id:full name:age\n" >> "$table_name"
+					echo -e "${id_${object_name}}:${object_name}:${age_${object_name}}\n" >> $table_name
+						
 					#here we need to open the terminal for the user to write the data he want and save it in the same file	 
 					else
 						"invalid name .... please try again"

@@ -16,20 +16,20 @@ display_menu () {
 # Define a function to drop a table from the database
 drop_table () {
   # Check if the databases folder exists
-  if [[ ! -d ./databases/ ]]; then
+  if [[ ! -d ~/databases/ ]]; then
     echo "The databases folder does not exist."
     return
   fi
 
   # Check if there are any databases
-  if [[ -z ./databases/$db_name ]]; then
+  if [[ -z ~/databases/$db_name ]]; then
     echo "There are no databases in the folder."
     return
   fi
 
   while true; do
     # Check if the database name is valid
-    if [[ ! -d ./databases/$db_name ]]; then
+    if [[ ! -d ~/databases/$db_name ]]; then
       echo "Invalid database name. Please try again."
     else
       break
@@ -37,13 +37,13 @@ drop_table () {
   done  
 
   # Check if there are any tables
-  if [[ -z ./databases/$db_name/$tablename ]]; then
+  if [[ -z ~/databases/$db_name/$tablename ]]; then
     echo "There are no tables in the database."
     return
   fi
   # Display the list of tables and ask the user to choose one
   echo "The tables in the database are:"
-  ls ./databases/$db_name/$tablename
+  ls ~/databases/$db_name/$tablename
   # Loop until the user enters a valid table name or 'q' to go back
   while true; do
     read -p "Enter the name of the table you want to drop or 'q' to go back: " tbl_name
@@ -52,7 +52,7 @@ drop_table () {
       return
     fi  
     # Check if the table name is valid
-    if [[ ! -f ./databases/$db_name/$tbl_name ]]; then
+    if [[ ! -f ~/databases/$db_name/$tbl_name ]]; then
       echo "Invalid table name. Please try again."
     else
       break
@@ -63,8 +63,8 @@ drop_table () {
   # Check if the user confirmed
   if [[ "$confirm" = "y" || "$confirm" = "Y" ]]; then
     # Drop the table from the database by deleting the file
-    rm  ./databases/$db_name/$tbl_name
-    rm  ./databases/$db_name/$tbl_name-metadata
+    rm  ~/databases/$db_name/$tbl_name
+    rm  ~/databases/$db_name/$tbl_name-metadata
 
     echo "The table $tbl_name has been deleted from the database."
   else

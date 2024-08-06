@@ -19,7 +19,7 @@ delete_table_data() {
     # Display list of tables
     echo "List of Tables:"
     echo "***************"
-    ls ./databases/$db_name
+    ls ~/databases/$db_name
     echo "***************"
  
     while true; do 
@@ -27,7 +27,7 @@ delete_table_data() {
         
         if [[ "$table_name" == 'q' ]]; then 
             ./DeleteFromTable.sh 
-        elif [[ ! -f ./databases/$db_name/$table_name ]]; then 
+        elif [[ ! -f ~/databases/$db_name/$table_name ]]; then 
             echo "Invalid table name. Please enter a valid table name or type'q' to go back."
             continue 
         fi 
@@ -36,7 +36,7 @@ delete_table_data() {
     done 
     
     # Check if table is empty
-    if [[ ! -s ./databases/$db_name/$table_name ]]; then
+    if [[ ! -s ~/databases/$db_name/$table_name ]]; then
         echo "Sorry, the table is empty and there is no data to be deleted."
         ./DeleteFromTable.sh
     fi
@@ -44,7 +44,7 @@ delete_table_data() {
     # Display table data
     echo "Table Data:"
     echo "*****************"
-    cat ./databases/$db_name/$table_name
+    cat ~/databases/$db_name/$table_name
     echo -e "\n"
     echo "*****************"
     dfalg=0
@@ -52,11 +52,11 @@ delete_table_data() {
     read -p "Are you sure you want to delete all data from this table? (y/n): " confirm
     if [[ "$confirm" == 'y' || "$confirm" == 'Y' ]]; then
         # Delete table data
-        > ./databases/$db_name/$table_name
+        > ~/databases/$db_name/$table_name
         echo "Table data deleted successfully."
         dfalg=1
     elif [[ "$confirm" == 'n' || "$confirm" == 'N' ]]; then
-        ./DeleteFromTable.sh
+       . ./DeleteFromTable.sh
     else
         echo "Invalid confirmation. Please enter a valid table name or type'q' to go back."
     fi
@@ -68,7 +68,7 @@ delete_specific_row() {
     # Display list of tables
     echo "List of Tables:"
     echo "****************"
-    ls ./databases/$db_name
+    ls ~/databases/$db_name
     echo "****************"
     
     while true; do 
@@ -76,7 +76,7 @@ delete_specific_row() {
         
         if [[ "$table_name" == 'q' ]]; then 
             return 
-        elif [[ ! -f ./databases/$db_name/$table_name ]]; then 
+        elif [[ ! -f ~/databases/$db_name/$table_name ]]; then 
             echo "Invalid table name. Please enter a valid table name or 'q' to go back."
             continue 
         fi 
@@ -84,19 +84,19 @@ delete_specific_row() {
     done 
     
     # Check if table is empty
-    if [[ ! -s ./databases/$db_name/$table_name ]]; then
+    if [[ ! -s ~/databases/$db_name/$table_name ]]; then
         echo "Sorry, the table is empty and there is no data to be deleted."
         return
     fi
     
     # Display table data and column names
-    #column_names=$(head -n 1  ./databases/$db_name/$table_name )
+    #column_names=$(head -n 1  ~/databases/$db_name/$table_name )
     echo "*****************"
     echo "Column Names: $column_names"
     echo "================="
     echo "Table Data:"
     echo "*****************"
-    cat ./databases/$db_name/$table_name | nl -s '. '
+    cat ~/databases/$db_name/$table_name | nl -s '. '
     echo "*****************************"
 
     while true; do 
@@ -109,7 +109,7 @@ delete_specific_row() {
             continue 
         fi 
         
-        row_count=$(cat ./databases/$db_name/$table_name | wc -l)
+        row_count=$(cat ~/databases/$db_name/$table_name | wc -l)
         
         if [[ "$row_number" -lt 1 || "$row_number" -gt "$row_count" ]]; then 
             echo "Invalid row number. Please enter a valid row number or 'q' to go back."
@@ -122,7 +122,7 @@ delete_specific_row() {
     read -p "Are you sure you want to delete this row? (y/n): " confirm
     
     if [[ "$confirm" == 'y' || "$confirm" == 'Y' ]]; then
-        sed -i "$((row_number))d" ./databases/$db_name/$table_name 
+        sed -i "$((row_number))d" ~/databases/$db_name/$table_name 
         echo "Row deleted successfully."
         drflag=1
     elif [[ "$confirm" == 'n' || "$confirm" == 'N' ]]; then

@@ -33,7 +33,7 @@ done
 function selectAll {
 
  echo  "--------------------Display table------------------------"
- awk -F: 'BEGIN {OFS="\t";} {print $0}' ./databases/$db_name/$tablename
+ awk -F: 'BEGIN {OFS="\t";} {print $0}' ~/databases/$db_name/$tablename
  echo  "-----------------------------------------------------------"
 
 
@@ -49,7 +49,7 @@ function selectColumn {
      if [[ $colnum =~ ^[0-9]+$ ]]
          then
          echo  "--------------------Display column-------------------------"
-         awk -v col="$colnum" 'BEGIN {FS = ":"} {print $col}' ./databases/$db_name/$tablename
+         awk -v col="$colnum" 'BEGIN {FS = ":"} {print $col}' ~/databases/$db_name/$tablename
          echo  "-----------------------------------------------------------"
          colflag=1
          else
@@ -80,31 +80,31 @@ do
     case $opt in
     "==")
         echo "------------Display needed row ------------"
-        awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol == value ) print  $0;}' ./databases/$db_name/$tablename
+        awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol == value ) print  $0;}' ~/databases/$db_name/$tablename
         echo  "----------------------------------------------------------"
         selectmenu
         ;;
         "<")
          echo "------------Display needed row ------------"
-awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol < value ) print $0;}' ./databases/$db_name/$tablename
+awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol < value ) print $0;}' ~/databases/$db_name/$tablename
 echo  "----------------------------------------------------------"
          selectmenu
         ;;
         ">")
          echo "------------Display needed row ------------"
-awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol > value ) print $0;}' ./databases/$db_name/$tablename
+awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol > value ) print $0;}' ~/databases/$db_name/$tablename
 echo  "----------------------------------------------------------"
          selectmenu
         ;;
         "<=")
          echo "------------Display needed row ------------" 
-awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol <= value ) print $0;}' ./databases/$db_name/$tablename
+awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol <= value ) print $0;}' ~/databases/$db_name/$tablename
 echo  "----------------------------------------------------------"
          selectmenu
         ;;
         ">=")
          cho "------------Display needed row ------------" 
-awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol >= value ) print $0;}' ./databases/$db_name/$tablename
+awk -v mycol="$mycol" -v value="$value" 'BEGIN {FS = ":"} { if( $mycol >= value ) print $0;}' ~/databases/$db_name/$tablename
 echo  "----------------------------------------------------------"
          selectmenu
         ;;
@@ -127,7 +127,7 @@ done
 function displayColumnNames {
 
     echo  "----------------Display column names----------------------"
-    awk 'BEGIN {FS = ":"} { print NR"- "$1}' ./databases/$db_name/$tablename-metadata
+    awk 'BEGIN {FS = ":"} { print NR"- "$1}' ~/databases/$db_name/$tablename-metadata
     echo  "-----------------------------------------------------------"
 
 }
@@ -144,7 +144,7 @@ do
       echo you must enter the table name to insert data into it
      read -p "please enter the table name " tablename
 
-    elif [[ -f ./databases/$db_name/$tablename ]]
+    elif [[ -f ~/databases/$db_name/$tablename ]]
      then
      selectmenu $tablename
      tableflag=1

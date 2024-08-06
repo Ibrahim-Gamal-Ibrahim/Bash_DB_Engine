@@ -7,13 +7,13 @@ echo "..Here You Can Insert Into Tables.."
 echo "********************************"
 
 function checkIfRedundantData {
-  numColumns=$(wc -l  < ./databases/$db_name/$tablename)
+  numColumns=$(wc -l  < ~/databases/$db_name/$tablename)
   echo $numColumns
   if [[ $numColumns > 0 ]]
    then
     for ((i=1; i<=numColumns; i++))
      do
-        columndata=$(awk -v i="$i" number="$2" 'BEGIN {FS = ":"} NR == i {print $number}' ./databases/$db_name/$tablename)
+        columndata=$(awk -v i="$i" number="$2" 'BEGIN {FS = ":"} NR == i {print $number}' ~/databases/$db_name/$tablename)
          if [[ $columndata == $1 ]]
          then
           echo "true"
@@ -35,19 +35,19 @@ do
       echo "you must enter the table name to insert data into it"
      read -p "please enter the table name: " tablename
 
-    elif [[ -f ./databases/$db_name/$tablename ]]
+    elif [[ -f ~/databases/$db_name/$tablename ]]
      then
    
-     num_records=$(wc -l < ./databases/$db_name/$tablename-metadata)
+     num_records=$(wc -l < ~/databases/$db_name/$tablename-metadata)
       #echo $num_records
       for ((i=1; i<=num_records; i++))
           do
    
-         columnname=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print $1}' ./databases/$db_name/$tablename-metadata)
+         columnname=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print $1}' ~/databases/$db_name/$tablename-metadata)
          #echo columnname= $columnname
-         columnnumber=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print NR}' ./databases/$db_name/$tablename-metadata)
+         columnnumber=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print NR}' ~/databases/$db_name/$tablename-metadata)
          #echo columnnumber= $columnnumber
-         columnpknum=$(awk -v i="$i" -F ":" ' {if($3=="yes") print NR}' ./databases/$db_name/$tablename-metadata)
+         columnpknum=$(awk -v i="$i" -F ":" ' {if($3=="yes") print NR}' ~/databases/$db_name/$tablename-metadata)
          #echo columnpknum= $columnpknum
          read -p "please enter the data of the $columnname column " data
          #check the datatype of the input data 
@@ -55,7 +55,7 @@ do
            while [ $datatypeflag -eq 0 ]
              do
     
-             columndatatype=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print $2}' ./databases/$db_name/$tablename-metadata)
+             columndatatype=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print $2}' ~/databases/$db_name/$tablename-metadata)
              #echo $columndatatype
              if [[ "$columndatatype" == *int* ]]
                  then
@@ -75,7 +75,7 @@ do
                         if [[ $data =~ ^[a-zA-Z]+$ ]]
                          then
                          isstring=0
-                         #echo -n $data":"  >> ./databases/$db_name/$tablename
+                         #echo -n $data":"  >> ~/databases/$db_name/$tablename
                          datatypeflag=1
                         else
                          isstring=1
@@ -88,7 +88,7 @@ do
             done
     
          #check the primary key of the input data
-         columnpk=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print $3}' ./databases/$db_name/$tablename-metadata)
+         columnpk=$(awk -v i="$i" 'BEGIN {FS = ":"} NR == i {print $3}' ~/databases/$db_name/$tablename-metadata)
          #echo $columnpk
          pkFlag=0
             while [ $pkFlag -eq 0 ]
@@ -106,7 +106,7 @@ do
                     
                     #echo $result
                  declare -i numColumns
-                 numColumns=$(wc -l  <  ./databases/$db_name/$tablename)
+                 numColumns=$(wc -l  <  ~/databases/$db_name/$tablename)
                     
                     if [[ $numColumns -gt 0 ]]
                         then
@@ -114,7 +114,7 @@ do
                         finalflag=0
                         found=0
                           columndata=()
-                           columndata=$(awk -v number="$columnnumber" 'BEGIN {FS = ":"} {print $number }'  ./databases/$db_name/$tablename )
+                           columndata=$(awk -v number="$columnnumber" 'BEGIN {FS = ":"} {print $number }'  ~/databases/$db_name/$tablename )
                            #echo columnid= $columndata
                            for item in ${columndata[@]}
                                do
@@ -133,7 +133,7 @@ do
                             else
                               if [[ "$isnumber" == "0" || "$isstring" == "0" ]]
                                  then
-                                 echo -n $data":"  >>  ./databases/$db_name/$tablename
+                                 echo -n $data":"  >>  ~/databases/$db_name/$tablename
                                  pkFlag=1
                                 fi
                             fi 
@@ -141,21 +141,21 @@ do
                        
                     else
                      echo "insert data"
-                     echo -n $data":"  >> ./databases/$db_name/$tablename
+                     echo -n $data":"  >> ~/databases/$db_name/$tablename
                      pkFlag=1
 
                     fi 
                                     
                 else
                  #echo insert data
-                 echo -n $data":"  >> ./databases/$db_name/$tablename
+                 echo -n $data":"  >> ~/databases/$db_name/$tablename
                  pkFlag=1
                 fi
             done
 
          
         done
-        echo  >> ./databases/$db_name/$tablename
+        echo  >> ~/databases/$db_name/$tablename
      tableflag=1
 
     else

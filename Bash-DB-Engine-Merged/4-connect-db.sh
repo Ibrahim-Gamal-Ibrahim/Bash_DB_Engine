@@ -6,7 +6,7 @@ echo "********************************"
 echo "..Here You Can Connect to Databases.."
 echo "********************************"
 echo "These are databases: "
-ls ./databases/
+ls ~/databases/
 
  flag=0
 export db_name
@@ -15,25 +15,25 @@ export db_name
   do
   if [[ $db_name == 'q' ]]
   then
-    ./main-menu-db.sh
+   . ./main-menu-db.sh
 
   elif [[ -z $db_name ]]
   then
   echo "you must enter the database name to connect"
   read -p "please enter the database name or type 'q' to return back: " db_name
 
-  elif [[ -d ./databases/$db_name ]]
+  elif [[ -d ~/databases/$db_name ]]
   then
   flag=1
   . ./TablesMainMenu.sh
-  cd ./databases/$dbname
+  cd ~/databases/$dbname
   else
 
     echo "this database name not exists"
     read -p "please enter the database name or type 'q' to return back: " db_name
 fi
 done
-cd ./Bash-DB-Engine-Merged
-./Bash-DB-Engine-Merged/main-menu-db.sh
+cd -                      #./Bash-DB-Engine-Merged
+. ./main-menu-db.sh       #./Bash-DB-Engine-Merged/main-menu-db.sh
 
 

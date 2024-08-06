@@ -37,7 +37,7 @@ done
 function checkColumnExist {
       existflag=0
        while [ $existflag -eq 0 ];do
-        exist= $( grep "$columnname" ./databases/$db_name/$tablename-metadata ) 2>> /dev/null
+        exist= $( grep "$columnname" ~/databases/$db_name/$tablename-metadata ) 2>> /dev/null
         echo $exit
          if [ -z "$exist" ]
          then
@@ -68,7 +68,7 @@ while [ $flag -eq 0 ];do
     echo "table name can not be empty"
     read -p "please enter a valid table name: " tablename
 
-    elif [[ -f  ./databases/$db_name/$tablename ]]
+    elif [[ -f  ~/databases/$db_name/$tablename ]]
     then
     echo "this name already exists"
     read -p "please enter a valid table name: " tablename
@@ -83,7 +83,7 @@ while [ $flag -eq 0 ];do
     fi
     done
 
-    touch ./databases/$db_name/$tablename
+    touch ~/databases/$db_name/$tablename
     echo "The data file is created for this table"
     #. ./TablesMainMenu.sh
 
@@ -93,21 +93,21 @@ while [ $numflag -eq 0 ];do
     if [[ $columns =~ ^[0-9]+$ ]]; then
       for (( i = 1; i <= $columns; i++ )); do
          read -p "Enter the column name: " columnname 
-
+      echo -n $columnname":" >> ~/databases/$db_name/$tablename-metadata
       checkColumnExist " $columnname " 
         
       checkColumnName " $columnname " 
-      echo -n $columnname":" >> ./databases/$db_name/$tablename-metadata
+      #echo -n $columnname":" >> ~/databases/$db_name/$tablename-metadata
       datatypeflag=0
       read -p "Choose column's datatype String(s) Number(n): (s/n) " datatype
         while [ $datatypeflag -eq 0 ]; do
       
           if [[ "$datatype" == *n* ]]; then
-             datatype="int";  echo -n $datatype":"  >> ./databases/$db_name/$tablename-metadata
+             datatype="int";  echo -n $datatype":"  >> ~/databases/$db_name/$tablename-metadata
              datatypeflag=1
         
             elif [[ "$datatype" == *s* ]]; then
-             datatype="str";  echo -n $datatype":"  >> ./databases/$db_name/$tablename-metadata
+             datatype="str";  echo -n $datatype":"  >> ~/databases/$db_name/$tablename-metadata
              datatypeflag=1
             else
              echo "Wrong Choice"
@@ -122,19 +122,19 @@ while [ $numflag -eq 0 ];do
                 case "$pk" in
                     "y" | "Y" ) 
                     pk="yes"
-                    echo  $pk  >> ./databases/$db_name/$tablename-metadata
+                    echo  $pk  >> ~/databases/$db_name/$tablename-metadata
                     pkFlag=1;
                     break;;
                     "n" | "N" ) 
                     pk="no"
-                    echo  $pk  >> ./databases/$db_name/$tablename-metadata
+                    echo  $pk  >> ~/databases/$db_name/$tablename-metadata
                     break;;
                     * ) echo "Invalid option $REPLY";;
                 esac
             done
         else
          pk="no"
-         echo  $pk  >> ./databases/$db_name/$tablename-metadata
+         echo  $pk  >> ~/databases/$db_name/$tablename-metadata
         fi
     
     done

@@ -7,12 +7,12 @@ shopt -s extglob                #import Advanced Regex
 #write the code of listings
 ShowAllDBFun(){
 
-if [[ -z $(ls -F ./databases | grep / ) ]]; then
+if [[ -z $(ls -F ~/databases | grep / ) ]]; then
    echo " Sorry, there is no databse found !!"   
    echo " ***********************************"      
 
 else
-	find ./databases  -maxdepth 1 -type d ! -name '.*' ! -name '~'  ! -name 'inventory' -exec basename {} \;
+	find ~/databases  -maxdepth 1 -type d ! -name '.*' ! -name '~'  ! -name 'databases' -exec basename {} \;
 fi
 }
 

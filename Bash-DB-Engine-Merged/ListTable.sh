@@ -6,13 +6,24 @@ echo "********************************"
 echo "..Here You Can List Tables.."
 echo "********************************"
 
+ListAllTablesFun() {
+  if [[ -d ~/databases/$db_name/ ]];then
+    echo "These are all tables exists on your server"
+    sleep 1
+    find ~/databases/$db_name/ -type f ! -name '~*' ! -name '.*' ! -name 'databases'  ! -name '*-metadata' -exec basename {} \; 
+  else
+    echo "there are no tables to display"
+  fi
+
+}
 ListTablesFun() {
 read -p "Enter table name to list: " tbl_name
-if [[ -f ./databases/$db_name/$tbl_name ]]; then
+if [[ -f ~/databases/$db_name/$tbl_name ]]; then
   echo "Contents of ${db_name}:$tbl_name: "
   echo "================================"
-  cat ./databases/$db_name/$tbl_name
+  cat ~/databases/$db_name/$tbl_name
   echo -e "\n"
+  echo "================================"
 else
   echo "Sorry, Table '$tbl_name' does not found in database '$db_name'" 
 fi 
@@ -21,11 +32,16 @@ fi
 }
 
 echo "========= TABLE MENU =========="
-options=("List table" "Go back to tables menu")
+options=("List all tables" "List a specific table" "Go back to tables menu")
 select opt in "${options[@]}"
 do
 case $opt in
-    "List table" ) 
+    "List all tables")
+    ListAllTablesFun
+    break
+    ;;
+
+    "List a specific table" ) 
       ListTablesFun
       break
       ;;

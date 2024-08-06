@@ -33,7 +33,7 @@ echo "********************************"
 echo "..Here You Can Update Tables.."
 echo "********************************"
 echo "Tables in the $db_name database:"
-ls ./databases/$db_name/
+ls ~/databases/$db_name/
 
 update_choice=0
 # Get the user's choice of whether to update the data or metadata or return back.
@@ -51,7 +51,7 @@ while true; do
 # Update table data
 # Ask the user which table they want to update
 echo "Which table do you want to update?"
-ls ./databases/$db_name/
+ls ~/databases/$db_name/
 echo "============================"
 read tablename
 
@@ -62,7 +62,7 @@ if [[ -z $tablename ]]; then
 fi
 
 # Check if the table_choice variable is a valid table name
-if [[ ! -f ./databases/$db_name/$tablename ]]; then
+if [[ ! -f ~/databases/$db_name/$tablename ]]; then
   echo "The table $tablename does not exist."
 
   # Ask the user to try again or type 'q' to return back
@@ -84,7 +84,7 @@ done
   # If the user chooses to update the data, get the record and column they want to update.
   if [[ $update_choice == "r" ]]; then
   # Get the PK column name from the metadata file
-  pk_column=$(sed -n '1p' ./databases/$db_name/$tablename-metadata | cut -d ':' -f 2)
+  pk_column=$(sed -n '1p' ~/databases/$db_name/$tablename-metadata | cut -d ':' -f 2)
   # Ask the user which record they want to update? (specify by PK)
   echo "Which record do you want to update? (specify by pk)"
   read pk_choice
@@ -93,7 +93,7 @@ done
   echo "Which column do you want to update? (specify by column number)"
   read col_choice
   # Check if the col_choice is a number
-    if [[ ! $col_choice -ge 1 && $col_choice -le $(wc -l < ./databases/$db_name/$tablename) ]]; then
+    if [[ ! $col_choice -ge 1 && $col_choice -le $(wc -l < ~/databases/$db_name/$tablename) ]]; then
        echo "The column number $col_choice is invalid."
        continue
     fi
@@ -103,7 +103,7 @@ done
     read new_data
 
     # Replace the old data with the new data
-    sed -i "/^$pk_choice:/s/[^:]*\(:\|$\)/$new_data\1/$col_choice" ./databases/$db_name/$tablename
+    sed -i "/^$pk_choice:/s/[^:]*\(:\|$\)/$new_data\1/$col_choice" ~/databases/$db_name/$tablename
     echo "the data has been successfully updated :)"
   
 # If the user chooses to update the metadata..
@@ -122,7 +122,7 @@ fi
 # Check if the metadata choice is "pk"
 if [[ $metadata_choice == "pk" ]]; then
     # Get the current PK name
-    current_pk_name=$(awk -F ':' '$3 == "yes" {print $1}' "./databases/$db_name/$tablename-metadata")
+    current_pk_name=$(awk -F ':' '$3 == "yes" {print $1}' "~/databases/$db_name/$tablename-metadata")
 
     # Display the current PK to the user
     echo "The current primary key of this table is: $current_pk_name"
@@ -134,7 +134,7 @@ if [[ $metadata_choice == "pk" ]]; then
     # Check if the user wants to change the PK
     if [[ $change_pk_choice == "y" ]]; then
         # Display the column names to the user
-        column_names=$(cut -d ':' -f 1 "./databases/$db_name/$tablename-metadata")
+        column_names=$(cut -d ':' -f 1 "~/databases/$db_name/$tablename-metadata")
         echo "The available columns are: $column_names"
 
         # Ask the user for the new PK column
@@ -148,8 +148,8 @@ if [[ $metadata_choice == "pk" ]]; then
         fi
 
         # Update the PK column in the metadata file
-        sed -i "s/^$current_pk_name:int:yes/$current_pk_name:int:no/" "./databases/$db_name/$tablename-metadata"
-        sed -i "s/^$new_pk_column:int:no/$new_pk_column:int:yes/" "./databases/$db_name/$tablename-metadata"
+        sed -i "s/^$current_pk_name:int:yes/$current_pk_name:int:no/" "~/databases/$db_name/$tablename-metadata"
+        sed -i "s/^$new_pk_column:int:no/$new_pk_column:int:yes/" "~/databases/$db_name/$tablename-metadata"
         echo "The primary key has been successfully updated. The new primary key column is: $new_pk_column"
     else
         echo "No changes were made to the primary key."
@@ -159,7 +159,7 @@ fi
 # Change the datatype
 if [[ $metadata_choice == "dt" ]]; then
 # Read the column names from the metadata file
-column_names=$(cut -d ':' -f 1 "./databases/$db_name/$tablename-metadata")
+column_names=$(cut -d ':' -f 1 "~/databases/$db_name/$tablename-metadata")
 
 # Display the available columns to the user
 echo "These are the columns of the table: "
@@ -174,7 +174,7 @@ if ! echo "$column_names" | grep -q -w "$col_choice"; then
 fi
 
 # Get the current datatype of the column
-current_datatype=$(grep -w "^$col_choice:" "./databases/$db_name/$tablename-metadata" | cut -d ':' -f 2)
+current_datatype=$(grep -w "^$col_choice:" "~/databases/$db_name/$tablename-metadata" | cut -d ':' -f 2)
 
 # Ask the user for the new datatype
 # echo "The current datatype of column $col_choice is $current_datatype"
@@ -188,8 +188,8 @@ while [[ $new_datatype != "int" && $new_datatype != "str" ]]; do
 done
 
 # Update the datatype in the metadata file
-awk -v col="$col_choice" -v new_datatype="$new_datatype" 'BEGIN{FS=OFS=":"} $1 == col {$2 = new_datatype} 1' "./databases/$db_name/$tablename-metadata" > "./databases/$dbname/$tablename-metadata.tmp"
-mv "./databases/$db_name/$tablename-metadata.tmp" "./databases/$dbname/$tablename-metadata"
+awk -v col="$col_choice" -v new_datatype="$new_datatype" 'BEGIN{FS=OFS=":"} $1 == col {$2 = new_datatype} 1' "~/databases/$db_name/$tablename-metadata" > "~/databases/$dbname/$tablename-metadata.tmp"
+mv "~/databases/$db_name/$tablename-metadata.tmp" "~/databases/$dbname/$tablename-metadata"
 
 echo "The datatype of column $col_choice has been successfully updated to $new_datatype."
 fi
@@ -199,7 +199,7 @@ if [[ $metadata_choice == "col" ]]; then
 # Ask the user to enter the new column's data type
 read -p "Please enter the new column's name: " newname
 checkColumnName "$columnname" 
-echo -n $newname":"  >>  ./databases/$db_name/$tablename-metadata
+echo -n $newname":"  >>  ~/databases/$db_name/$tablename-metadata
 
 echo "Please enter the new column's data type (int or str):"
 read new_data_type
@@ -211,8 +211,8 @@ if [[ $new_data_type != "int" && $new_data_type != "str" ]]; then
 fi
 
 # Add the new data type to the end of the metadata file
-echo -n $new_data_type":"  >> ./databases/$db_name/$tablename-metadata
-echo  "no"  >> ./databases/$db_name/$tablename-metadata
+echo -n $new_data_type":"  >> ~/databases/$db_name/$tablename-metadata
+echo  "no"  >> ~/databases/$db_name/$tablename-metadata
 
 # Inform the user that the tablename-metadata file has been updated successfully
 echo "A new column has been created successfully in the $tablename."

@@ -11,11 +11,11 @@ shopt -s extglob                #import Advanced Regex
 dbflag=0
 while [ $dbflag -eq 0 ]
 do
-    if [[ -d  ./databases ]]
+    if [[ -d  ~/databases ]]
      then
      dbflag=1
     else
-     mkdir ./databases
+     mkdir ~/databases
     fi
 done
 
